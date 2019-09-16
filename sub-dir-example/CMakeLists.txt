@@ -23,7 +23,7 @@ set(CppKafka_INCLUDE_DIRS ${EXTERNAL_CPP_KAFKA_INSTALL_LOCATION}/include)
 set(CppKafka_LIBRARIES ${EXTERNAL_CPP_KAFKA_INSTALL_LOCATION}/lib/libcppkafka.a)
 
 
-# Add a external project in the path & expose to external path
+# Saction 5 - Add a external project in the path & expose to external path
 set(EXTERNAL_JSON_INSTALL_LOCATION ${CMAKE_SOURCE_DIR}/external/json)
 ExternalProject_Add(
         Json
@@ -47,3 +47,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${Json_INCLUDE_DIRS})
 target_link_libraries(
         ${PROJECT_NAME} LINK_PRIVATE ${RDKAFKA_LIBRARIES} ${CppKafka_LIBRARIES} helper ${RocksDB_LIBRARIES}
 )
+
+# What all is needed to use Json
+#   use ExternalProject_Add
+#   set a var which points to include folder
+#   add target_include_directories with json include folder
