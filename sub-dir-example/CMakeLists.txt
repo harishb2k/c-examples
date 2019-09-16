@@ -17,16 +17,20 @@ ExternalProject_Add(
         CppKafka
         GIT_REPOSITORY https://github.com/mfontanini/cppkafka.git
         CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_CPP_KAFKA_INSTALL_LOCATION} -DCPPKAFKA_DISABLE_TESTS=ON -DCPPKAFKA_BUILD_SHARED=OFF
+        UPDATE_COMMAND ""
 )
 set(CppKafka_INCLUDE_DIRS ${EXTERNAL_CPP_KAFKA_INSTALL_LOCATION}/include)
 set(CppKafka_LIBRARIES ${EXTERNAL_CPP_KAFKA_INSTALL_LOCATION}/lib/libcppkafka.a)
 
 # We need RdKafka for CppKafka to work
 find_package(RDKAFKA REQUIRED)
+find_package(rocksdb REQUIRED)
+
 target_include_directories(${PROJECT_NAME} PRIVATE ${CppKafka_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${RDKAFKA_INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${RocksDB_INCLUDE_DIR})
 
 # Link helper project
-target_link_libraries(${PROJECT_NAME} LINK_PRIVATE
-        ${RDKAFKA_LIBRARIES} ${CppKafka_LIBRARIES} helper
-        )
+target_link_libraries(
+        ${PROJECT_NAME} LINK_PRIVATE ${RDKAFKA_LIBRARIES} ${CppKafka_LIBRARIES} helper ${RocksDB_LIBRARIES}
+)
