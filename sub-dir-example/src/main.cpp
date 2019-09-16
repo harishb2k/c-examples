@@ -8,10 +8,15 @@
 #include <cppkafka/cppkafka.h>
 #include "rocksdb/db.h"
 #include <assert.h>
+#include <nlohmann/json.hpp>
+#include "person.h"
 
+// for convenience
+using json = nlohmann::json;
 using namespace std;
 using namespace cppkafka;
 using namespace rocksdb;
+using namespace ns;
 
 std::string kDBPath = "/tmp/rocksdb_simple_example";
 
@@ -67,6 +72,17 @@ void main_rocks() {
     std::string value;
     status = db->Get(ReadOptions(), Slice("key"), &value);
     cout << value << endl;
+
+    ns::person p{"Ned Flanders", "744 Evergreen Terrace", 60};
+    json jr = p;
+    std::cout << jr << std::endl;
+
+
+    status = db->Put(WriteOptions(), Slice(p.name), Slice(jr.dump()));
+    assert(status.ok());
+    status = db->Get(ReadOptions(), Slice(p.name), &value);
+    cout << value << endl;
+
 
     delete db;
 }
