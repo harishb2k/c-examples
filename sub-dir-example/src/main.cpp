@@ -20,6 +20,7 @@ using namespace ns;
 
 std::string kDBPath = "/tmp/rocksdb_simple_example";
 
+void main_json();
 void main_rocks();
 
 int main() {
@@ -83,6 +84,24 @@ void main_rocks() {
     status = db->Get(ReadOptions(), Slice(p.name), &value);
     cout << value << endl;
 
+    ns::person j3 = json::parse(value);
+
+    main_json();
 
     delete db;
+}
+
+// Method to use Json-String and String-Json
+void main_json() {
+
+    // Create a object and and convert to string via dump
+    ns::person p{"Ned Flanders", "744 Evergreen Terrace", 60};
+    json jr = p;
+    std::cout << jr << std::endl;
+    std::cout << jr.dump() << std::endl;
+
+    // String to object
+    std::string string_dump = jr.dump();
+    ns::person j3 = json::parse(string_dump);
+    std::cout << j3.name << std::endl;
 }
