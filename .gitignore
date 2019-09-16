@@ -2,3 +2,4 @@
 sub-dir-example/build
 sub-dir-example/cmake-build-debug
 sub-dir-example/.idea
+sub-dir-example/external
