@@ -3,7 +3,8 @@ project(sub-dir-example)
 set(CMAKE_CXX_STANDARD 14)
 message("Project Name: ${PROJECT_NAME}")
 
-# This will put rocks DB include and Libs in the path
+# [x] CMake uses find package. It needs to find all the FindXXX.cmake files. These FindXXX.cmake files are searched in
+# CMAKE_MODULE_PATH location
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 add_subdirectory(helper)
@@ -11,7 +12,7 @@ add_executable(${PROJECT_NAME} src/main.cpp src/person.cpp)
 
 include(ExternalProject)
 
-# Add a external project in the path & expose to external path
+# Add CPP Kafka - this will output lib and include to EXTERNAL_CPP_KAFKA_INSTALL_LOCATION folder.
 set(EXTERNAL_CPP_KAFKA_INSTALL_LOCATION ${CMAKE_SOURCE_DIR}/external/cppkafka)
 ExternalProject_Add(
         CppKafka
@@ -51,4 +52,4 @@ target_link_libraries(
 # What all is needed to use Json
 #   use ExternalProject_Add
 #   set a var which points to include folder
-#   add target_include_directories with json include folder 
+#   add target_include_directories with json include folder
